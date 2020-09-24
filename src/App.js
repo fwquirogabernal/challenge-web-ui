@@ -3,7 +3,6 @@ import TodoList from "./components/TodoList";
 import Form from "../src/components/Form";
 import Header from "../src/components/Header";
 import TasksProvider from "../src/contexts/TasksContext";
-
 function App() {
   return (
     <TasksProvider>

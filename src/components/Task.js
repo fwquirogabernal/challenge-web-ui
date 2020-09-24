@@ -57,7 +57,10 @@ const Task = ({ task, checked }) => {
                       {task.description}
                       </p>
                       </div>
-                  <div className="col-1">
+                  {
+                    task.isCompleted ? null :
+                    (
+                      <div className="col-1">
                     <span
                       className="badge badge-info"
                       onClick={() => clicked(task)}
@@ -65,6 +68,8 @@ const Task = ({ task, checked }) => {
                       Modificar
                     </span>
                   </div>
+                    )
+                  }
                 </div>
               </div>
             ) : (

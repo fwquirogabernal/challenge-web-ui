@@ -11,11 +11,14 @@ const TasksProvider = (props) => {
   const [taskToEdit, editTask] = useState({});
   const [tasksToEdit, editTasks] = useState({});
   const [tasksToDelet, deleteTasks] = useState({});
+  const [error, setError ]= useState('');
 
   const apiUrl = "http://localhost:5000/api/task/";
   const getTasks = async () => {
     const url = apiUrl + "getall";
-    const response = await Axios.get(url);
+    const response = await Axios.get(url).catch(e => {
+      setError(e.message);
+    });
     setTasks(response.data);
   };
   useEffect(() => {
@@ -29,7 +32,9 @@ const TasksProvider = (props) => {
         const headers = {
           "Content-Type": "application/json",
         };
-        const response = await Axios.post(url, task, headers);
+        await Axios.post(url, task, headers).catch(e => {
+          setError(e.message);
+        });
         getTasks();
       };
       newTask();
@@ -43,7 +48,9 @@ const TasksProvider = (props) => {
         const headers = {
           "Content-Type": "application/json",
         };
-        const response = await Axios.post(url, taskToEdit, headers);
+        await Axios.post(url, taskToEdit, headers).catch(e => {
+          setError(e.message);
+        });
       }
     };
     editedTask();
@@ -56,7 +63,11 @@ const TasksProvider = (props) => {
         const headers = {
           "Content-Type": "application/json",
         };
-        const response = await Axios.post(url, tasksToEdit, headers);
+        await Axios.post(url, tasksToEdit, headers).catch(e => {
+          setError(e.message);
+        });
+        getTasks();
+
        }
     };
     editedTask();
@@ -69,7 +80,9 @@ const TasksProvider = (props) => {
         const headers = {
           "Content-Type": "application/json",
         };
-        const response = await Axios.post(url, tasksToDelet, headers);
+        await Axios.post(url, tasksToDelet, headers).catch(e => {
+          setError(e.message);
+        });
         getTasks();
       }
     };
@@ -78,7 +91,7 @@ const TasksProvider = (props) => {
 
   return (
     <TasksContext.Provider
-      value={{ tasks, setTask, saveTask, editTask, deleteTasks, editTasks }}
+      value={{ tasks, setTask, saveTask, editTask, deleteTasks, editTasks, error }}
     >
       {props.children}
     </TasksContext.Provider>
